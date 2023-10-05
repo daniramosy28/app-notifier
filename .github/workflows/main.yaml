@@ -1,9 +1,9 @@
-name: IaC Lifecycle
+name: 2 Checkpoint IaC
 
 on:
   push:
     branches:
-    - main
+    - develop
 
 jobs:
 
@@ -14,7 +14,7 @@ jobs:
 
     - name: Step 01 - Terraform Install
       env :
-        TERRAFORM_VERSION: "1.4.0"
+        TERRAFORM_VERSION: "1.5.6"
       run : |
         tf_version=$TERRAFORM_VERSION
         wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
@@ -28,25 +28,56 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Step 04 - Set AWS Account
-      uses: aws-actions/configure-aws-credentials@v1-node16
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region           : us-east-1
-
-    - name: Step 05 - Terraform Init
+        
+    - name: Step 05 Create S3 Bucket
+      run: aws s3api create-bucket --bucket tf-notifier-state-2checkpoint --region us-east-1   
+      
+    - name: Create DynamoDB Table
+      run: aws dynamodb create-table --table-name tf-notifier-state-2checkpoint --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+    
+    - name: Step Configure Backend for Terraform
+      run: echo 'terraform { backend "s3" { bucket = "tf-notifier-state-desafio" key = "path/to/terraform.tfstate" region = "us-east-1" } }' > backend.tf   
+      
+    - name: Step 06 - Terraform Init
       run : terraform -chdir=./terraform init -input=false
 
-    - name: Step 06 - Terraform Validate
-      run : terraform -chdir=./terraform validate
+    - name: step 07 - Terraform Unit Tests
+      run: terraform -chdir=./terrform validate
+      
+    - name: step 08 - Terraform Plan with Contract Tests
+      run: terraform -chdir=./terraform plan -input=false -out tf
+      #run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan 
 
-    - name: Step 07 - Terraform Plan
-      # run : terraform -chdir=./terraform plan -input=false -out tfplan
-      run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan
+    #- name: Step 09 - Checkov Security Scan
+     # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf      
 
-    - name: Step 08 - Terraform Apply
+    #- name: Step 10 - Checkov Security Scan
+     # run: |
+      #  docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf
+       # checkov_exit_code=$?
+       # if [ $checkov_exit_code -eq 0 ]; then
+        #  echo "Checkov scan passed."
+        #else
+         # echo "Checkov scan failed."
+         # exit 1 # Isso falhará a pipeline se o Checkov encontrar problemas de segurança.
+        #fi
+    
+    #- name: Step 07 - Terraform Validate
+     # run : terraform -chdir=./terraform validate
+
+    #- name: Step 08 - Terraform Plan
+      #run : terraform -chdir=./terraform plan -input=false -out tfplan
+      #run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan
+
+    - name: Step 11 - Terraform Apply
       run : terraform -chdir=./terraform apply -auto-approve -input=false tfplan
 
-    - name: Step 09 - Terraform Show
+    - name: Step 12 - Terraform Show
       run : terraform -chdir=./terraform show
+      
