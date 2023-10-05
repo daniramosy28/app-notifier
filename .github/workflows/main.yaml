@@ -48,7 +48,7 @@ jobs:
       run : terraform -chdir=./terraform init -input=false
 
     - name: step 07 - Terraform Unit Tests
-      run: terraform -chdir=./terrform validate
+      run: terraform -chdir=./terraform validate
       
     - name: step 08 - Terraform Plan with Contract Tests
       run: terraform -chdir=./terraform plan -input=false -out tf
