@@ -41,7 +41,7 @@ module "compute" {
     vpc_sn_pub_az1_id        = "${module.rede.vpc_sn_pub_az1_id}"
     vpc_sn_pub_az2_id        = "${module.rede.vpc_sn_pub_az2_id}"
     vpc_sg_pub_id            = "${module.rede.vpc_sg_pub_id}"
-    rds_endpoint             = "${module.database.rds_endpoint}"
+    rds_endpoint             = "${module.dados.rds_endpoint}"
     rds_dbuser               = "${var.rds_dbuser}"
     rds_dbpassword           = "${var.rds_dbpassword}"
     rds_dbname               = "${var.rds_dbname}"
