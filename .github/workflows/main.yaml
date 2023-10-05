@@ -36,13 +36,13 @@ jobs:
         aws-region           : us-east-1
         
     - name: Step 05 Create S3 Bucket
-      run: aws s3api create-bucket --bucket tf-notifier-state-2checkpoint --region us-east-1   
+      run: aws s3api create-bucket --bucket tf-notifier-state-2checkpointDani --region us-east-1   
       
     - name: Create DynamoDB Table
-      run: aws dynamodb create-table --table-name tf-notifier-state-2checkpoint --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+      run: aws dynamodb create-table --table-name tf-notifier-state-2checkpointDani --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
     
     - name: Step Configure Backend for Terraform
-      run: echo 'terraform { backend "s3" { bucket = "tf-notifier-state-desafio" key = "path/to/terraform.tfstate" region = "us-east-1" } }' > backend.tf   
+      run: echo 'terraform { backend "s3" { bucket = "tf-notifier-state-2checkpointDani" key = "path/to/terraform.tfstate" region = "us-east-1" } }' > backend.tf   
       
     - name: Step 06 - Terraform Init
       run : terraform -chdir=./terraform init -input=false
