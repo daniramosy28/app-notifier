@@ -17,24 +17,24 @@ variable "rds_dbname" {}
 
 # COMPUTE VARS DEFAULT VALUES
 
-variable "ec2_lt_name" {
+variable "ec2_launch_name" {
     type    = string
-    default = "ec2_lt_name"
+    default = "ec2_launch_name"
 }
 
-variable "ec2_lt_ami" {
+variable "ec2_launch_ami" {
     type    = string
     default = "ami-02e136e904f3da870"
 }
 
-variable "ec2_lt_instance_type" {
+variable "ec2_launch_instance_type" {
     type    = string
     default = "t2.micro"
 }
 
-variable "ec2_lt_ssh_key_name" {
+variable "ec2_launch_ssh_key_name" {
     type    = string
-    default = "ec2_lt_ssh_key_name"
+    default = "ec2_launch_ssh_key_name"
 }
 
 variable "ec2_lb_name" {

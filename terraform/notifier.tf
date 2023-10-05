@@ -26,10 +26,10 @@ module "dados" {
 
 module "compute" {
     source                   = "./modules/compute"
-    ec2_lt_name              = "${var.ec2_lt_name}"
-    ec2_lt_ami               = "${var.ec2_lt_ami}"
-    ec2_lt_instance_type     = "${var.ec2_lt_instance_type}"
-    ec2_lt_ssh_key_name      = "${var.ec2_lt_ssh_key_name}"
+    ec2_launch_name          = "${var.ec2_launch_name}"
+    ec2_launch_ami           = "${var.ec2_launch_ami}"
+    ec2_launch_instance_type = "${var.ec2_launch_instance_type}"
+    ec2_launch_ssh_key_name  = "${var.ec2_launch_ssh_key_name}"
     ec2_lb_name              = "${var.ec2_lb_name}"
     ec2_lb_tg_name           = "${var.ec2_lb_tg_name}"
     ec2_asg_name             = "${var.ec2_asg_name}"
