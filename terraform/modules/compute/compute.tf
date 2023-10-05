@@ -61,7 +61,7 @@ resource "aws_autoscaling_group" "ec2_asg" {
     vpc_zone_identifier = ["${var.vpc_sn_pub_az1_id}", "${var.vpc_sn_pub_az2_id}"]
     target_group_arns   = [aws_lb_target_group.ec2_lb_tg.arn]
     launch_template {
-        id      = aws_launch_template.ec2_lt.id
+        id      = aws_launch_template.ec2_launch.id
         version = "$Latest"
     }
 }
