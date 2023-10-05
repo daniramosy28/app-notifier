@@ -54,8 +54,8 @@ jobs:
       run: terraform -chdir=./terraform plan -input=false -out tfplan
       #run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan 
 
-    #- name: Step 08 - Checkov Security Scan
-     # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf  
+    #- name: Step 08 - Checkov Security Scan Setup
+     # run: pip3 install checkov
 
     #- name: Step 10 - Checkov Security Scan
      # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf      
