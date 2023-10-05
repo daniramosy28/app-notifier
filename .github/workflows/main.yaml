@@ -54,10 +54,13 @@ jobs:
       run: terraform -chdir=./terraform plan -input=false -out tfplan
       #run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan 
 
-    #- name: Step 09 - Checkov Security Scan
-     # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf      
+    #- name: Step 08 - Checkov Security Scan
+     # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf  
 
     #- name: Step 10 - Checkov Security Scan
+     # run: docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf      
+
+    #- name: Step 11 - Checkov Security Scan
      # run: |
       #  docker run --rm -v $(pwd):/tf bridgecrew/checkov:latest -d /tf
        # checkov_exit_code=$?
@@ -75,9 +78,9 @@ jobs:
       #run : terraform -chdir=./terraform plan -input=false -out tfplan
       #run : terraform -chdir=./terraform plan -input=false -destroy -out tfplan
 
-    - name: Step 11 - Terraform Apply
+    - name: Step 12 - Terraform Apply
       run : terraform -chdir=./terraform apply -auto-approve -input=false tfplan
 
-    - name: Step 12 - Terraform Show
+    - name: Step 13 - Terraform Show
       run : terraform -chdir=./terraform show
       
